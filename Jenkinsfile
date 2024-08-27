@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Deploying application'
                 script {
-                    def jarFile = 'build/libs/SCC.jar'
+                    def jarFile = 'build/libs/sample-java-project.jar'
                     if (fileExists(jarFile)) {
                         powershell "java -jar ${jarFile}"
                     } else {

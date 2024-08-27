@@ -15,7 +15,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.beust:jcommander:1.81'
+    implementation 'com.beust:jcommander:1.81'  // JCommander dependency
+    implementation 'org.projectlombok:lombok:1.18.26'  // Lombok dependency
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'  // Lombok annotation processor
     testImplementation 'junit:junit:4.13.2'
 }
 

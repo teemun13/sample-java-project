@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.beust:jcommander:1.81'
     testImplementation 'junit:junit:4.13.2'
 }
 

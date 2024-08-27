@@ -3,17 +3,34 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo 'Checking out source code'
                 git branch: 'master', url: 'https://github.com/yyxxxy/sample-java-project.git'
             }
         }
         stage('Build') {
-            steps { powershell 'gradle clean build' }
+            steps {
+                echo 'Running Gradle build'
+                powershell 'gradle --no-daemon clean build'
+            }
         }
         stage('Test') {
-            steps { powershell 'gradle test' }
+            steps {
+                echo 'Running Gradle tests'
+                powershell 'gradle --no-daemon test'
+            }
         }
         stage('Deploy') {
-            steps { powershell 'java -jar build/libs/SCC.jar' }
+            steps {
+                echo 'Deploying application'
+                script {
+                    def jarFile = 'build/libs/SCC.jar'
+                    if (fileExists(jarFile)) {
+                        powershell "java -jar ${jarFile}"
+                    } else {
+                        error "JAR file not found: ${jarFile}"
+                    }
+                }
+            }
         }
     }
     post {
@@ -23,11 +40,11 @@ pipeline {
         }
         success {
             echo 'Build succeeded!!!'
-        // You could add notification steps here
+            // You could add notification steps here
         }
         failure {
             echo 'Build failed!'
-        // You could add notification steps here
+            // You could add notification steps here
         }
     }
 }

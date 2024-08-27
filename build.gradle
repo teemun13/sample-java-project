@@ -1,67 +1,49 @@
-plugins {
-    id 'java'
-    id 'application'
-    id 'jacoco' 
+apply plugin: 'java'
+apply plugin:'jacoco'
+jacoco {
+    toolVersion = "0.8.7"
 }
-
-group = 'com.todomvc'
-version = '1.0.0'
-
-sourceCompatibility = '21'
-targetCompatibility = '21'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+group = 'com.example'
+version = 'V1'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
-    implementation 'org.springframework:spring-web:5.3.20'
-    implementation 'org.slf4j:slf4j-api:1.7.36'
     testImplementation 'junit:junit:4.13.2'
 }
 
-application {
-    mainClass.set('com.todomvc.Main')
-}
-
-jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    manifest {
-        attributes(
-            'Main-Class': 'com.todomvc.Main'
-        )
-    }
-    
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
-
-task runApp(type: JavaExec) {
-    mainClass.set('com.todomvc.Main')
-    classpath = sourceSets.main.runtimeClasspath
-}
-
-task buildReport {
-    doLast {
-        println "Build report generated at: build/reports"
-    }
-}
-
-tasks.named('build') {
-    dependsOn 'buildReport'
-}
-
 test {
-    useJUnitPlatform()
+    // Specify the directory containing test classes
+    testClassesDirs = sourceSets.test.output.classesDirs
+
+    // Optionally configure test options
+    testLogging {
+        // Configure which events to log during test execution
+        events 'passed', 'skipped', 'failed'
+    }
+    finalizedBy jacocoTestReport
 }
 
-jacocoTestReport { // <-- Ensure this follows the test block
+ jar {
+    manifest {
+        attributes 'Main-Class': 'com.example.HelloWorld'        
+    }
+
+    from sourceSets.main.output  // Include compiled classes in the JAR
+    archiveBaseName = 'sample-java-project'  // Name of the JAR file
+    destinationDirectory = file('build/libs')  // Output directory for the JAR file
+}
+
+jacocoTestReport {
     dependsOn test
     reports {
-        xml.required.set(true)
-        html.required.set(true)
+        xml.required = true
+        html.required = true
     }
 }

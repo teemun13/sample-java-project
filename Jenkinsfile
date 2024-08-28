@@ -22,14 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application'
-                script {
-                    def jarFile = 'build/libs/sample-java-project.jar'
-                    if (fileExists(jarFile)) {
-                        powershell "java -jar ${jarFile}"
-                    } else {
-                        error "JAR file not found: ${jarFile}"
-                    }
-                }
+                powershell 'java -jar build/libs/sample-java-project.jar'
             }
         }
     }

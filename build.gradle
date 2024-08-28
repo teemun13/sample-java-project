@@ -63,9 +63,10 @@ jar {
 // }
 
 jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-        html.required = true
-    }
+ steps {
+        jacoco execPattern: '**/build/jacoco/test.exec', 
+                classPattern: '**/build/classes/java/main', 
+                sourcePattern: '**/src/main/java', 
+                inclusionPattern: '**/*.class'
+        }
 }

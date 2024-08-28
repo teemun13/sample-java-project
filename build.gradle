@@ -1,12 +1,17 @@
-apply plugin: 'java'
-apply plugin:'jacoco'
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
 jacoco {
     toolVersion = "0.8.7"
 }
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
+
 group = 'com.example'
 version = 'V1'
 
@@ -22,15 +27,10 @@ dependencies {
 }
 
 test {
-    // Specify the directory containing test classes
-    testClassesDirs = sourceSets.test.output.classesDirs
-
-    // Optionally configure test options
+    finalizedBy jacocoTestReport  // Ensure the report is generated after tests
     testLogging {
-        // Configure which events to log during test execution
         events 'passed', 'skipped', 'failed'
     }
-    finalizedBy jacocoTestReport
 }
 
 jar {
@@ -39,34 +39,17 @@ jar {
             'Main-Class': 'com.example.SampleJavaProject'  // Main class to run
         )
     }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with copySpec {
-        from sourceSets.main.output  // Include compiled classes
-        into ''
-    }
+    from sourceSets.main.output  // Include compiled classes in the JAR
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE  // Handle duplicate files by excluding duplicates
     archiveBaseName.set('sample-java-project')  // Name of the JAR file
     archiveVersion.set('V1')  // Version of the JAR file
     destinationDirectory.set(file("$buildDir/libs"))  // Output directory for the JAR file
 }
 
-// jar {
-//     manifest {
-//         attributes 'Main-Class': 'com.example.SampleJavaProject'
-//     }
-
-//     from sourceSets.main.output  // Include compiled classes in the JAR
-//     archiveBaseName = 'sample-java-project'  // Name of the JAR file
-//     destinationDirectory = file('build/libs')  // Output directory for the JAR file
-// }
-
 jacocoTestReport {
- steps {
-        jacoco execPattern: '**/build/jacoco/test.exec', 
-                classPattern: '**/build/classes/java/main', 
-                sourcePattern: '**/src/main/java', 
-                inclusionPattern: '**/*.class'
-        }
+    dependsOn test // Ensure test task runs before generating report
+    reports {
+        xml.required = true  // Enable XML report
+        html.required = true // Enable HTML report
+    }
 }

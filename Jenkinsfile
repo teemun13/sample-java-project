@@ -3,25 +3,18 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out source code'
                 git branch: 'master', url: 'https://github.com/yyxxxy/sample-java-project.git'
             }
         }
         stage('Build') {
-            steps {
-                echo 'Running Gradle build'
-                powershell 'gradle --no-daemon clean build'
-            }
+            steps { powershell 'gradle clean build' }
         }
         stage('Test') {
-            steps {
-                echo 'Running Gradle tests'
-                powershell 'gradle --no-daemon test'
-            }
+            steps { powershell 'gradle test' }
         }
         stage('Deploy') {
-            steps {
-                powershell 'java -jar build/libs/sample-java-project-V1.jar'
+            steps { 
+                powershell 'java -jar build/libs/sample-java-project.jar --name yu'
             }
         }
     }

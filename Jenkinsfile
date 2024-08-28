@@ -10,13 +10,15 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running Gradle build'
-                powershell 'gradle --no-daemon clean build'
+                // powershell 'gradle --no-daemon clean build'
+                powershell 'gradle clean build'
             }
         }
         stage('Test') {
             steps {
                 echo 'Running Gradle tests'
-                powershell 'gradle --no-daemon test'
+                // powershell 'gradle --no-daemon test'
+                powershell 'gradle test'
             }
         }
         stage('Deploy') {

@@ -46,6 +46,7 @@ jar {
         from sourceSets.main.output  // Include compiled classes
         into ''
     }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE  // Handle duplicate files by excluding duplicates
     archiveBaseName.set('sample-java-project')  // Name of the JAR file
     archiveVersion.set('V1')  // Version of the JAR file
     destinationDirectory.set(file("$buildDir/libs"))  // Output directory for the JAR file

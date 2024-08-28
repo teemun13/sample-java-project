@@ -21,8 +21,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying application'
-                powershell 'java -jar build/libs/sample-java-project.jar'
+                powershell 'java -jar build/libs/sample-java-project-V1.jar'
             }
         }
     }
@@ -33,11 +32,11 @@ pipeline {
         }
         success {
             echo 'Build succeeded!!!'
-            // You could add notification steps here
+        // You could add notification steps here
         }
         failure {
             echo 'Build failed!'
-            // You could add notification steps here
+        // You could add notification steps here
         }
     }
 }

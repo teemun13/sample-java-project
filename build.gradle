@@ -35,13 +35,31 @@ test {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.example.SampleJavaProject'
+        attributes(
+            'Main-Class': 'com.example.SampleJavaProject'  // Main class to run
+        )
     }
-
-    from sourceSets.main.output  // Include compiled classes in the JAR
-    archiveBaseName = 'sample-java-project'  // Name of the JAR file
-    destinationDirectory = file('build/libs')  // Output directory for the JAR file
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with copySpec {
+        from sourceSets.main.output  // Include compiled classes
+        into ''
+    }
+    archiveBaseName.set('sample-java-project')  // Name of the JAR file
+    archiveVersion.set('V1')  // Version of the JAR file
+    destinationDirectory.set(file("$buildDir/libs"))  // Output directory for the JAR file
 }
+
+// jar {
+//     manifest {
+//         attributes 'Main-Class': 'com.example.SampleJavaProject'
+//     }
+
+//     from sourceSets.main.output  // Include compiled classes in the JAR
+//     archiveBaseName = 'sample-java-project'  // Name of the JAR file
+//     destinationDirectory = file('build/libs')  // Output directory for the JAR file
+// }
 
 jacocoTestReport {
     dependsOn test

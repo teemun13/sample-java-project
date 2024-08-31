@@ -35,6 +35,10 @@ public class SampleJavaProject implements Runnable {
     @Parameter(names = { "-h", "--help" }, description = "print help message")
     private boolean help = false;
 
+    /** Command line parameter for --help. */
+    @Parameter(names = "--verbose", description = "Enable verbose output")
+    private boolean verbose = false;
+
     /**
      * Print the "Hello, world!" string.
      * @param args application input arguments
@@ -48,6 +52,11 @@ public class SampleJavaProject implements Runnable {
                 jc.usage();
                 return;
             }
+
+	      if (sjp.verbose) {
+	           System.out.println("Verbose output enabled.");
+        	 }
+
         } catch (ParameterException e) {
             System.err.println("error: " + e.getMessage());
             new JCommander(new SampleJavaProject()).usage();

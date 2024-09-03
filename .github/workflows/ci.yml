@@ -54,4 +54,4 @@ jobs:
       run: docker run -d -p 8080:8080 --name sample-java-project-container sample-java-project  
 
     - name: Verify Docker container is running  
-      run: | docker ps 
+      run: docker ps 

@@ -21,7 +21,7 @@ public class SampleJavaProject implements Runnable {
     /** The delay between printed messages. */
     private static final long PRINT_DELAY = 1000L;
 
-    /** The name to be printed in the output message.*/
+    /** The name to be printed in the output message. */
     @Getter @Setter @NonNull
     @Parameter(names = "--name", description = "set the user's name",
                required = true)

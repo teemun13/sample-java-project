@@ -47,14 +47,11 @@ jobs:
         name: code-coverage-report
         path: build/reports/jacoco/test/html/**
 
-   - name: Build Docker image  
+    - name: Build Docker image  
+      run: docker build -t sample-java-project .  
 
-    run: docker build -t sample-java-project .  
+    - name: Run Docker container  
+      run: docker run -d -p 8080:8080 --name sample-java-project-container sample-java-project  
 
-   - name: Run Docker container  
-
-   run: docker run -d -p 8080:8080 --name sample-java-project-container sample-java-project  
-
-   - name: Verify Docker container is running  
-
-   run: | docker ps 
+    - name: Verify Docker container is running  
+      run: | docker ps 
